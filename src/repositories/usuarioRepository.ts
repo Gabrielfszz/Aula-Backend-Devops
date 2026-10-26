@@ -9,23 +9,26 @@ export class UsuarioRepository {
         return await Usuario.findByPk(id);
     }
 
-    async findByEmail(email: string): Promise <Usuario | null> {
-        return await Usuario.findOne({where: { email }});
+    async findByEmail(email: string) : Promise<Usuario | null> {
+        return await Usuario.findOne({ where: { email }});
     }
 
-    async create(usuarioData: Omit<UsuarioAttributes, "id">): Promise<Usuario> {
-        return await Usuario.create(usuarioData);
+    async create(usuarioData: Omit<UsuarioAttributes, "id">):
+        Promise<Usuario> {
+            return await Usuario.create(usuarioData);
     }
 
-    async update(id: number, usuarioData: Partial<UsuarioAttributes>): Promise<Usuario | null> {
-        const currentUser = await this.findById(id);
-        if (!currentUser) return null;
+    async update(id:number, 
+        usuarioData: Partial<UsuarioAttributes>)
+            :Promise<Usuario | null> {
+                const currentUser = await this.findById(id);
+                if (!currentUser) return null;
 
-        await currentUser.update(usuarioData);
-        return currentUser;
+                await currentUser.update(usuarioData);
+                return currentUser;
     }
 
-    async delete(id: number): Promise<boolean> {
+    async delete(id:number): Promise<boolean> {
         const result = await Usuario.destroy({where: {id}});
         return result > 0;
     }

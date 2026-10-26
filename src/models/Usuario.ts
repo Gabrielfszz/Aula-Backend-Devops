@@ -1,5 +1,5 @@
 import {DataTypes, Model} from "sequelize";
-import { sequelize } from "../config/database";
+import {sequelize} from "../config/database";
 
 export interface UsuarioAttributes {
     id?: number;
@@ -8,11 +8,13 @@ export interface UsuarioAttributes {
     senha: string;
 }
 
-export class Usuario extends Model<UsuarioAttributes> implements UsuarioAttributes {
-    public id!: number;
-    public nome!: string;
-    public email!: string;
-    public senha!: string;
+export class Usuario 
+    extends Model<UsuarioAttributes>
+    implements UsuarioAttributes {
+        public id!: number;
+        public nome!: string;   
+        public email!: string;
+        public senha!: string;
 }
 
 Usuario.init({
@@ -37,6 +39,6 @@ Usuario.init({
 },
 {
     sequelize,
-    modelName: "Usuario",
-    tableName: "usuarios"
-})
+    modelName: 'Usuario',
+    tableName: 'usuarios'
+});

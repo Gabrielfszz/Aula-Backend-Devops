@@ -5,7 +5,7 @@ export class AuthController {
     private usuarioService: UsuarioService;
 
     constructor() {
-        this.usuarioService = new UsuarioService();
+       this.usuarioService = new UsuarioService();  
     }
 
     async login(req: Request, res: Response) : Promise<Response> {

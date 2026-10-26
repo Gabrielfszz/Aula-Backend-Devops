@@ -1,5 +1,6 @@
 import {Router} from "express";
-import {UsuarioController} from "../controllers/usuarioController"
+import {UsuarioController} from "../controllers/usuarioController";
+import {authMiddleware} from "../middleware/authMiddleware";
 
 const router = Router();
 const usuarioController = new UsuarioController();
@@ -16,7 +17,10 @@ const usuarioController = new UsuarioController();
  *                  example: 1
  *              nome:
  *                  type: string
- *                  example: Fulano da SIlva
+ *                  example: Fulano da Silva
+ *              email:
+ *                  type: string
+ *                  example: Fulano@gmail.com
  */
 
 /**
@@ -25,6 +29,8 @@ const usuarioController = new UsuarioController();
  *  get:
  *      summary: Lista todos os usuários
  *      tags: [Usuarios]
+ *      security:
+ *          - bearerAuth: []
  *      responses:
  *          200:
  *              description: Lista de todos usuários
@@ -34,12 +40,14 @@ const usuarioController = new UsuarioController();
  *                          type: array
  *                          items:
  *                              $ref: '#/componentes/schemas/Usuario'
+ *          401:
+ *              description: Token inválido
  *          500:
  *              description: Erro Interno
  *                  
  */
 
-router.get("/", (req, res) => usuarioController.getAll(req,res));
+router.get("/", authMiddleware, (req, res) => usuarioController.getAll(req,res));
 
 /**
  * @swagger
@@ -47,6 +55,8 @@ router.get("/", (req, res) => usuarioController.getAll(req,res));
  *  get:
  *      summary: Buscar usuários por Id
  *      tags: [Usuarios]
+ *      security:
+ *          - bearerAuth: []
  *      parameters:
  *          - in: path
  *            name: id
@@ -60,11 +70,13 @@ router.get("/", (req, res) => usuarioController.getAll(req,res));
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Usuario'
+ *          401:
+ *              description: Token inválido
  *          404:
  *              description: Usuário não encontrado
  *                        
  */
-router.get("/:id", (req, res) => usuarioController.getById(req, res));
+router.get("/:id", authMiddleware, (req, res) => usuarioController.getById(req, res));
 
 /**
  * @swagger
@@ -88,7 +100,7 @@ router.get("/:id", (req, res) => usuarioController.getById(req, res));
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#components/schemas/Usuario'
+ *                          $ref: '#/components/schemas/Usuario'
  *          400:
  *              description: Erro de validação
  */
@@ -100,6 +112,8 @@ router.post("/", (req, res) => usuarioController.create(req, res));
  *  put:
  *      summary: Atualizar usuários por Id
  *      tags: [Usuarios]
+ *      security:
+ *          - bearerAuth: []
  *      parameters:
  *          - in: path
  *            name: id
@@ -122,11 +136,13 @@ router.post("/", (req, res) => usuarioController.create(req, res));
  *              content:
  *                  application/json:
  *                      schema:
- *                          $ref: '#components/schemas/Usuario'
+ *                          $ref: '#/components/schemas/Usuario'
+ *          401:
+ *              description: Token inválido
  *          404:
  *              description: Usuário não encontrado
  */
-router.put("/:id", (req, res) => usuarioController.update(req, res));
+router.put("/:id", authMiddleware, (req, res) => usuarioController.update(req, res));
 /**
  * @swagger
  * /api/usuarios/{id}:
@@ -142,9 +158,11 @@ router.put("/:id", (req, res) => usuarioController.update(req, res));
  *      responses:
  *          200:
  *              description: Usuário deletado com sucesso
+ *          401:
+ *              description: Token inválido
  *          404:
  *              description: Usuário não encontrado
  */
-router.delete("/:id", (req, res) => usuarioController.delete(req, res));
+router.delete("/:id", authMiddleware, (req, res) => usuarioController.delete(req, res));
 
 export default router;

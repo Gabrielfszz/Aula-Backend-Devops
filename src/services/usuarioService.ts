@@ -63,7 +63,7 @@ export class UsuarioService {
 
         const token = jwt.sign(
             {id: usuario.id, email: usuario.email, nome: usuario.nome},
-            JWT_SECRET!,
+            JWT_SECRET,
             { expiresIn: JWT_EXPIRES_IN}
         )
     }
